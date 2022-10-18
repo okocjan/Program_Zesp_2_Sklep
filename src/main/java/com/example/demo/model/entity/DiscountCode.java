@@ -1,16 +1,15 @@
 package com.example.demo.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "discount_code", schema = "storedb")
-public class DiscountCode {
+public class DiscountCode implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "code", nullable = false, length = 30)
     private String code;
@@ -18,11 +17,11 @@ public class DiscountCode {
     @Column(name = "discount", nullable = false)
     private Integer discount;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

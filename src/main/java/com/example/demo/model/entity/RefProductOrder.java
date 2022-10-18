@@ -1,11 +1,13 @@
 package com.example.demo.model.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "ref_product_order", schema = "storedb")
-public class RefProductOrder {
+public class RefProductOrder implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 

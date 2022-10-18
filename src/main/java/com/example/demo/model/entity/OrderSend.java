@@ -1,13 +1,15 @@
 package com.example.demo.model.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "order_send", schema = "storedb")
-public class OrderSend {
+public class OrderSend implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id", nullable = false)
@@ -19,11 +21,11 @@ public class OrderSend {
     @Column(name = "delivery_company", nullable = false)
     private Integer deliveryCompany;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

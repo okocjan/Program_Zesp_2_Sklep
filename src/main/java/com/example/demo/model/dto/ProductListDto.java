@@ -1,30 +1,27 @@
-package com.example.demo.model.entity;
+package com.example.demo.model.dto;
 
 import com.example.demo.model.entity.custom.ProductType;
 
-import javax.persistence.*;
-import java.io.Serializable;
+public class ProductListDto {
 
-@Entity
-@Table(name = "product", schema = "storedb")
-public class Product implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "capacity", nullable = false)
     private Integer capacity;
-
-    @Column(name = "price", nullable = false)
     private Double price;
-
-    @Column(name = "type", nullable = false, length = 1)
-    @Enumerated(EnumType.ORDINAL)
     private ProductType type;
+    private String imageSource;
+
+    public ProductListDto(Long id, String name, Integer capacity, Double price, ProductType type, String imageSource) {
+        this.id = id;
+        this.name = name;
+        this.capacity = capacity;
+        this.price = price;
+        this.type = type;
+        this.imageSource = imageSource;
+    }
+
+    public ProductListDto() {
+    }
 
     public Long getId() {
         return id;
@@ -66,4 +63,11 @@ public class Product implements Serializable {
         this.type = type;
     }
 
+    public String getImageSource() {
+        return imageSource;
+    }
+
+    public void setImageSource(String imageSource) {
+        this.imageSource = imageSource;
+    }
 }
