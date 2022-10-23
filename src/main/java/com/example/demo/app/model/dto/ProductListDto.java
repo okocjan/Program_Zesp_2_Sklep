@@ -1,6 +1,6 @@
-package com.example.demo.model.dto;
+package com.example.demo.app.model.dto;
 
-import com.example.demo.model.entity.custom.ProductType;
+import com.example.demo.app.model.entity.custom.ProductType;
 
 public class ProductListDto {
 

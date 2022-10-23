@@ -1,4 +1,4 @@
-package com.example.demo.model.entity;
+package com.example.demo.app.model.entity;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

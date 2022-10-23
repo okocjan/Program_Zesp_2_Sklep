@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.app.controller;
 
-import com.example.demo.model.dto.ProductListDto;
-import com.example.demo.service.IProductService;
+import com.example.demo.app.model.dto.ProductListDto;
+import com.example.demo.app.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

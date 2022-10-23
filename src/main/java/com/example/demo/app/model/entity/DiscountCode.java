@@ -1,4 +1,4 @@
-package com.example.demo.model.entity;
+package com.example.demo.app.model.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

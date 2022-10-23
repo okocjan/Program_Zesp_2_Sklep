@@ -3,14 +3,11 @@ create table if not exists storedb.product
     id       serial
         constraint table_name_pk
             primary key,
-    name     varchar  not null,
-    capacity integer  not null,
-    price    real     not null,
-    type     smallint not null
+    name     varchar     not null,
+    capacity integer     not null,
+    price    real        not null,
+    type     varchar(50) not null
 );
-
-alter table storedb.product
-    owner to postgres;
 
 create table if not exists storedb.product_picture
 (
@@ -27,9 +24,6 @@ create table if not exists storedb.product_picture
             primary key
 );
 
-alter table storedb.product_picture
-    owner to postgres;
-
 create table if not exists storedb.customer
 (
     id        serial
@@ -44,9 +38,6 @@ create table if not exists storedb.customer
     user_id   integer      not null
 );
 
-alter table storedb.customer
-    owner to postgres;
-
 create table if not exists storedb.discount_code
 (
     id       serial
@@ -57,9 +48,6 @@ create table if not exists storedb.discount_code
             unique,
     discount integer     not null
 );
-
-alter table storedb.discount_code
-    owner to postgres;
 
 create table if not exists storedb."order"
 (
@@ -77,9 +65,6 @@ create table if not exists storedb."order"
             references storedb.discount_code
 );
 
-alter table storedb."order"
-    owner to postgres;
-
 create table if not exists storedb.ref_product_order
 (
     product_id integer not null
@@ -92,9 +77,6 @@ create table if not exists storedb.ref_product_order
         constraint ref_product_order_pk
             primary key
 );
-
-alter table storedb.ref_product_order
-    owner to postgres;
 
 create table if not exists storedb.order_send
 (
@@ -110,9 +92,6 @@ create table if not exists storedb.order_send
             primary key
 );
 
-alter table storedb.order_send
-    owner to postgres;
-
 create unique index if not exists order_send_order_id_uindex
     on storedb.order_send (order_id);
 
@@ -127,7 +106,3 @@ create table if not exists storedb.storage
         constraint storage_pk
             primary key
 );
-
-alter table storedb.storage
-    owner to postgres;
-

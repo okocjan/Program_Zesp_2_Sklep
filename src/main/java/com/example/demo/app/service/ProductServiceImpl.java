@@ -1,10 +1,10 @@
-package com.example.demo.service;
+package com.example.demo.app.service;
 
-import com.example.demo.model.dto.ProductListDto;
-import com.example.demo.model.entity.Product;
-import com.example.demo.model.entity.ProductPicture;
-import com.example.demo.repository.ProductPictureRepository;
-import com.example.demo.repository.ProductRepository;
+import com.example.demo.app.model.dto.ProductListDto;
+import com.example.demo.app.model.entity.Product;
+import com.example.demo.app.model.entity.ProductPicture;
+import com.example.demo.app.repository.ProductPictureRepository;
+import com.example.demo.app.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

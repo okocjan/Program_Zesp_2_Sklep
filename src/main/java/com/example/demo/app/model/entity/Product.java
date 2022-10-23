@@ -1,6 +1,6 @@
-package com.example.demo.model.entity;
+package com.example.demo.app.model.entity;
 
-import com.example.demo.model.entity.custom.ProductType;
+import com.example.demo.app.model.entity.custom.ProductType;
 
 import javax.persistence.*;
 import java.io.Serializable;

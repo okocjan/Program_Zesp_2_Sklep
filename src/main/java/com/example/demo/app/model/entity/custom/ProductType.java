@@ -1,4 +1,4 @@
-package com.example.demo.model.entity.custom;
+package com.example.demo.app.model.entity.custom;
 
 public enum ProductType {
 
