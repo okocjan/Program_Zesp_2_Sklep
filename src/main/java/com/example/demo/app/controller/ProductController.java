@@ -45,8 +45,8 @@ public class ProductController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ProductPersistDto> updateProduct(@RequestBody ProductPersistDto product) {
-        ProductPersistDto result = productService.updateProduct(product);
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+        Product result = productService.updateProduct(product);
         return Objects.isNull(result)
                 ? new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
                 : new ResponseEntity<>(result, HttpStatus.OK);
