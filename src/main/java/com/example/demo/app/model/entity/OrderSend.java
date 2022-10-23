@@ -1,10 +1,21 @@
 package com.example.demo.app.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "order_send", schema = "storedb")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class OrderSend implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,6 +23,7 @@ public class OrderSend implements Serializable {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
@@ -21,36 +33,7 @@ public class OrderSend implements Serializable {
     @Column(name = "delivery_company", nullable = false)
     private Integer deliveryCompany;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public Integer getTrackingNumber() {
-        return trackingNumber;
-    }
-
-    public void setTrackingNumber(Integer trackingNumber) {
-        this.trackingNumber = trackingNumber;
-    }
-
-    public Integer getDeliveryCompany() {
-        return deliveryCompany;
-    }
-
-    public void setDeliveryCompany(Integer deliveryCompany) {
-        this.deliveryCompany = deliveryCompany;
-    }
+    @Column(name = "total_price", nullable = false)
+    private Double totalPrice;
 
 }

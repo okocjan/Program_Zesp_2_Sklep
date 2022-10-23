@@ -1,13 +1,25 @@
 package com.example.demo.app.model.entity;
 
 import com.example.demo.app.model.entity.custom.ProductType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "product", schema = "storedb")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Product implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,48 +34,26 @@ public class Product implements Serializable {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "type", nullable = false, length = 1)
-    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private ProductType type;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "description", nullable = false, length = 2048)
+    private String description;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ManyToMany
+    @JoinTable(name = "produkty_zamowienie",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    @JsonIgnore
+    private Set<Order> orders = new LinkedHashSet<>();
 
-    public String getName() {
-        return name;
-    }
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Storage storage;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public ProductType getType() {
-        return type;
-    }
-
-    public void setType(ProductType type) {
-        this.type = type;
-    }
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private ProductPicture productPicture;
 
 }
