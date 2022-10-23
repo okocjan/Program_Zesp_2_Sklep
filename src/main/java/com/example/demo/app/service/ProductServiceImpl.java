@@ -1,6 +1,5 @@
 package com.example.demo.app.service;
 
-import com.example.demo.app.model.dto.ProductPersistDto;
 import com.example.demo.app.model.dto.projection.ProductListDto;
 import com.example.demo.app.model.dto.projection.ProductPageDto;
 import com.example.demo.app.model.entity.Product;
@@ -63,8 +62,6 @@ public class ProductServiceImpl implements IProductService {
     public Product addProduct(Product product) {
         try {
             log.info("Trying to save product.");
-//            ProductPicture productPicture = productPictureRepository.saveAndFlush(product.getProductPicture());
-//            Storage storage = storageRepository.saveAndFlush(product.getStorage());
             product.getProductPicture().setProduct(product);
             product.getStorage().setProduct(product);
             return productRepository.saveAndFlush(product);
@@ -75,13 +72,14 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ProductPersistDto updateProduct(ProductPersistDto product) {
+    public Product updateProduct(Product product) {
         try {
             log.info("Trying to update product.");
-            productRepository.save(product.getProduct());
-            productPictureRepository.save(product.getProductPicture());
-            storageRepository.save(product.getStorage());
-            return product;
+            product.getProductPicture().setId(product.getId());
+            product.getStorage().setProductId(product.getId());
+            product.getProductPicture().setProduct(product);
+            product.getStorage().setProduct(product);
+            return productRepository.save(product);
         } catch (Exception e) {
             log.error("Error while updating product!!!", e);
             return null;
