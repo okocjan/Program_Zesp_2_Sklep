@@ -1,15 +1,27 @@
 package com.example.demo.app.model.entity;
 
+import com.example.demo.app.model.entity.custom.Stauts;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "\"order\"", schema = "storedb")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Order implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -18,11 +30,11 @@ public class Order implements Serializable {
     @Column(name = "order_date", nullable = false)
     private LocalDate orderDate;
 
-    @Column(name = "total_price", nullable = false)
-    private Float totalPrice;
+    @Column(name = "address", nullable = false)
+    private String deliveryAddress;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
@@ -30,44 +42,14 @@ public class Order implements Serializable {
     @JoinColumn(name = "discount_id")
     private DiscountCode discount;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToMany(mappedBy = "orders")
+    private List<Product> products = new ArrayList<>();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "order")
+    @PrimaryKeyJoinColumn
+    private OrderSend order;
 
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(LocalDate orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public Float getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Float totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public DiscountCode getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(DiscountCode discount) {
-        this.discount = discount;
-    }
+    @Enumerated(EnumType.STRING)
+    private Stauts status;
 
 }
