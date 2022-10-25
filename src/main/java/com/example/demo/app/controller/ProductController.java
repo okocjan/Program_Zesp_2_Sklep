@@ -1,10 +1,12 @@
 package com.example.demo.app.controller;
 
 import com.example.demo.app.model.dto.ProductPersistDto;
-import com.example.demo.app.model.entity.Product;
-import com.example.demo.app.service.IProductService;
+import com.example.demo.app.model.dto.ProductUpdateDto;
 import com.example.demo.app.model.dto.projection.ProductListDto;
 import com.example.demo.app.model.dto.projection.ProductPageDto;
+import com.example.demo.app.model.entity.Product;
+import com.example.demo.app.service.IProductService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,8 @@ import java.util.Objects;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/app/data/product")
+@RequestMapping("/product")
+@Api(tags = "Products", description = "Products API")
 public class ProductController {
 
     private final IProductService productService;
@@ -25,40 +28,36 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/list.json")
-    public ResponseEntity<Set<ProductListDto>> getProductsToView() {
+    @GetMapping
+    public ResponseEntity<Set<ProductListDto>> getAll() {
         return new ResponseEntity<>(productService.getAllProductsWithPicture(), HttpStatus.OK);
     }
 
-    @GetMapping("/getProduct.json")
-    public ResponseEntity<ProductPageDto> getProductPage(@RequestParam(name = "id") Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductPageDto> getProduct(@PathVariable(name = "id") Long id) {
         ProductPageDto result = productService.getProductPage(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
+    @PostMapping
+    public ResponseEntity<Product> addProduct(@RequestBody ProductPersistDto product) {
         Product result = productService.addProduct(product);
         return Objects.isNull(result)
                 ? new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
                 : new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+    @PutMapping
+    public ResponseEntity<Product> updateProduct(@RequestBody ProductUpdateDto product) {
         Product result = productService.updateProduct(product);
         return Objects.isNull(result)
                 ? new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
                 : new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
-    public ResponseEntity<Boolean> deleteProduct(@RequestBody(required = false) Product product,
-                                                 @RequestParam(required = false) Long id) {
-        if (Objects.isNull(product) && Objects.isNull(id)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Boolean result = productService.deleteProduct(product, id);
+    @DeleteMapping
+    public ResponseEntity<Boolean> deleteProduct(@RequestParam Long id) {
+        Boolean result = productService.deleteProduct(id);
         return result
                 ? new ResponseEntity<>(result, HttpStatus.OK)
                 : new ResponseEntity<>(false, HttpStatus.OK);
