@@ -5,11 +5,12 @@ import com.example.demo.app.model.entity.custom.ProductType;
 
 public interface ProductListDto {
 
-    public Long getId();
-    public String getName();
-    public Integer getCapacity();
-    public Double getPrice();
-    public ProductType getType();
-    public String getImageSource();
+    Long getId();
+    String getName();
+    Integer getCapacity();
+    Double getPrice();
+    ProductType getType();
+    String getDescription();
+    String getImageSource();
 
 }

@@ -16,13 +16,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     @Query(nativeQuery = true, value = "select p.id as id, p.name as name, p.capacity as capacity, p.price as price,"
-            + " p.type as type, pi.source as imageSource"
+            + " p.type as type, p.description as description, pi.source as imageSource"
             + " from storedb.product p"
             + " join storedb.product_picture pi on p.id = pi.product_id")
     Set<ProductListDto> getProductsListWithPicture();
 
     @Query(nativeQuery = true, value = "SELECT p.id as id, p.name as name, p.capacity as capacity, p.price as price,"
-            + " p.type as type, pi.source as source, s.count as quantity"
+            + " p.type as type, p.description as description, pi.source as source, s.count as quantity"
             + " from storedb.product p"
             + " join storedb.product_picture pi on p.id = pi.product_id"
             + " join storedb.storage s on p.id = s.product_id"

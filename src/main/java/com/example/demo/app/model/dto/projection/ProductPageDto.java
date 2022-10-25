@@ -9,6 +9,7 @@ public interface ProductPageDto {
     Integer getCapacity();
     Double getPrice();
     ProductType getType();
+    String getDescription();
     String getSource();
     Integer getQuantity();
 

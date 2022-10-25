@@ -1,5 +1,7 @@
 package com.example.demo.app.service;
 
+import com.example.demo.app.model.dto.ProductPersistDto;
+import com.example.demo.app.model.dto.ProductUpdateDto;
 import com.example.demo.app.model.dto.projection.ProductListDto;
 import com.example.demo.app.model.dto.projection.ProductPageDto;
 import com.example.demo.app.model.entity.Product;
@@ -12,9 +14,9 @@ public interface IProductService {
 
     ProductPageDto getProductPage(Long id);
 
-    Product addProduct(Product product);
+    Product addProduct(ProductPersistDto product);
 
-    Product updateProduct(Product product);
+    Product updateProduct(ProductUpdateDto product);
 
-    Boolean deleteProduct(Product product, Long id);
+    Boolean deleteProduct(Long id);
 }

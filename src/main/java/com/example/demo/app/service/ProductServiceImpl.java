@@ -1,33 +1,34 @@
 package com.example.demo.app.service;
 
+import com.example.demo.app.model.dto.ProductPersistDto;
+import com.example.demo.app.model.dto.ProductUpdateDto;
 import com.example.demo.app.model.dto.projection.ProductListDto;
 import com.example.demo.app.model.dto.projection.ProductPageDto;
 import com.example.demo.app.model.entity.Product;
-import com.example.demo.app.repository.ProductPictureRepository;
 import com.example.demo.app.repository.ProductRepository;
-import com.example.demo.app.repository.StorageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
+
+import static com.example.demo.app.model.entity.Product.createProductToPersist;
+import static com.example.demo.app.model.entity.Product.createProductToUpdate;
 
 @Service
 public class ProductServiceImpl implements IProductService {
 
     private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductRepository productRepository;
-    private final ProductPictureRepository productPictureRepository;
-    private final StorageRepository storageRepository;
+
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository,
-                              ProductPictureRepository productPictureRepository,
-                              StorageRepository storageRepository) {
+    public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.productPictureRepository = productPictureRepository;
-        this.storageRepository = storageRepository;
     }
 
 
@@ -38,7 +39,7 @@ public class ProductServiceImpl implements IProductService {
             Set<ProductListDto> productListDtos = productRepository.getProductsListWithPicture();
             return productListDtos;
         } catch (Exception e) {
-            log.error("Getting products with picture failed!!!", e);
+            log.error("Getting products with picture failed!!!\n{0}", e);
             return Collections.emptySet();
         }
 
@@ -53,51 +54,47 @@ public class ProductServiceImpl implements IProductService {
         } catch (NoSuchElementException e) {
             log.warn("Element not found!!!", e);
         } catch (Exception e) {
-            log.error("Error while searching for product", e);
+            log.error("Error while searching for product!!!\n{0}", e);
         }
         return null;
     }
 
     @Override
-    public Product addProduct(Product product) {
+    public Product addProduct(ProductPersistDto product) {
         try {
             log.info("Trying to save product.");
-            product.getProductPicture().setProduct(product);
-            product.getStorage().setProduct(product);
-            return productRepository.saveAndFlush(product);
+            Product toSave = createProductToPersist(product);
+            toSave.getProductPicture().setProduct(toSave);
+            toSave.getStorage().setProduct(toSave);
+            return productRepository.save(toSave);
         } catch (Exception e) {
-            log.error("Error while trying to save product.");
+            log.error("Error while trying to save product!!!\n{0}", e);
             return null;
         }
     }
 
     @Override
-    public Product updateProduct(Product product) {
+    public Product updateProduct(ProductUpdateDto product) {
         try {
             log.info("Trying to update product.");
-            product.getProductPicture().setId(product.getId());
-            product.getStorage().setProductId(product.getId());
-            product.getProductPicture().setProduct(product);
-            product.getStorage().setProduct(product);
-            return productRepository.save(product);
+            Product toSave = createProductToUpdate(product);
+            toSave.getProductPicture().setProduct(toSave);
+            toSave.getStorage().setProduct(toSave);
+            return productRepository.save(toSave);
         } catch (Exception e) {
-            log.error("Error while updating product!!!", e);
+            log.error("Error while updating product!!!\n{0}", e);
             return null;
         }
     }
 
     @Override
-    public Boolean deleteProduct(Product product, Long id) {
+    public Boolean deleteProduct(Long id) {
         try {
             log.info("Trying to delete product.");
-            if (Objects.isNull(product)) {
-                productRepository.deleteById(id);
-                return true;
-            }
-            productRepository.delete(product);
+            productRepository.deleteById(id);
             return true;
         } catch (Exception e) {
-            log.error("Error while deleting product!!!", e);
+            log.error("Error while deleting product!!!\n {0}", e);
             return false;
         }
     }
