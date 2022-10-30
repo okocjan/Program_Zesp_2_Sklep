@@ -26,22 +26,17 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-
     @Column(name = "name", nullable = false)
     private String name;
-
+    @Column(name = "description", nullable = false, length = 2048)
+    private String description;
     @Column(name = "capacity", nullable = false)
     private Integer capacity;
-
     @Column(name = "price", nullable = false)
     private Double price;
-
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductType type;
-
-    @Column(name = "description", nullable = false, length = 2048)
-    private String description;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "produkty_zamowienie",
@@ -49,7 +44,6 @@ public class Product implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     @JsonIgnore
     private Set<Order> orders = new LinkedHashSet<>();
-
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Storage storage;
