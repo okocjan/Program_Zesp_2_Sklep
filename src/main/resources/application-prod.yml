@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ec2-54-220-86-118.eu-west-1.compute.amazonaws.com:5432/d45nft5k2b01ug
-    username: snxsrusnnuallt
-    password: e28b4475a67c326e966e2540f4170b994b518aa690d2acf7c5f15e354ed23a23
+    url: jdbc:postgresql://postgresql-study-storedb.cgpig1o06tc3.eu-central-1.rds.amazonaws.com:5432/postgres
+    username: postgres
+    password: 6Dffwf5HHe2kpHZfJEHK
   flyway:
-    url: jdbc:postgresql://ec2-54-220-86-118.eu-west-1.compute.amazonaws.com:5432/d45nft5k2b01ug
-    user: snxsrusnnuallt
-    password: e28b4475a67c326e966e2540f4170b994b518aa690d2acf7c5f15e354ed23a23
+    url: jdbc:postgresql://postgresql-study-storedb.cgpig1o06tc3.eu-central-1.rds.amazonaws.com:5432/postgres
+    user: postgres
+    password: 6Dffwf5HHe2kpHZfJEHK
     schemas: storedb
   jpa:
     show-sql: false

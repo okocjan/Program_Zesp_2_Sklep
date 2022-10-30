@@ -5,7 +5,8 @@ public enum ProductType {
     DOG,
     CAT,
     FISH,
-    PARROT,
-    HAMSTER
+    HAMSTER,
+    BIRD,
+    OTHER
 
 }

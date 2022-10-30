@@ -1,50 +1,38 @@
-create table if not exists storedb.customer
-(
-    id        bigserial
-        primary key,
-    address   varchar(200) not null,
-    email     varchar(80)  not null,
-    last_name varchar(50)  not null,
-    name      varchar(50)  not null
-);
-
 create table if not exists storedb.discount_code
 (
     id       bigserial
         primary key,
-    code     varchar(30) not null,
+    active   boolean     not null,
+    code     varchar(30) not null
+        constraint uk_pgevf2g3j2jbto0crethuhpyt
+            unique,
     discount integer     not null
 );
 
+alter table storedb.discount_code
+    owner to postgres;
+
 create table if not exists storedb."order"
 (
-    id          bigserial
+    id              bigserial
         primary key,
-    address     varchar(255) not null,
-    order_date  date         not null,
-    status      varchar(255),
-    customer_id bigint       not null
-        constraint fk1oduxyuuo3n2g98l3j7754vym
-            references storedb.customer,
-    discount_id bigint
+    address         varchar(150)     not null,
+    delivery_type   varchar(10)      not null,
+    email           varchar(150)     not null,
+    last_name       varchar(150)     not null,
+    name            varchar(150)     not null,
+    order_date      date             not null,
+    phone_number    varchar(12)      not null,
+    status          varchar(15)      not null,
+    total_price     double precision not null,
+    tracking_number varchar(150)     not null,
+    discount_id     bigint
         constraint fk7jd3v7xxhgpkgfxu4e8jojqlt
             references storedb.discount_code
 );
 
-create table if not exists storedb.order_send
-(
-    id               bigserial
-        primary key,
-    delivery_company integer          not null,
-    total_price      double precision not null,
-    tracking_number  integer          not null,
-    order_id         bigint           not null
-        constraint uk_n1isrg8n48kuluhfx5wq64eg1
-            unique
-        constraint fkmohbp9lkhlg23pqxxfrtxkew8
-            references storedb."order"
-            on delete cascade
-);
+alter table storedb."order"
+    owner to postgres;
 
 create table if not exists storedb.product
 (
@@ -57,15 +45,20 @@ create table if not exists storedb.product
     type        varchar(255)     not null
 );
 
+alter table storedb.product
+    owner to postgres;
+
 create table if not exists storedb.product_picture
 (
     product_id bigint        not null
         primary key
         constraint fkhna689todg1mb769hwfgcmsos
-            references storedb.product
-            on delete cascade,
+            references storedb.product,
     source     varchar(1024) not null
 );
+
+alter table storedb.product_picture
+    owner to postgres;
 
 create table if not exists storedb.ref_product_order
 (
@@ -81,12 +74,18 @@ create table if not exists storedb.ref_product_order
             on delete cascade
 );
 
+alter table storedb.ref_product_order
+    owner to postgres;
+
 create table if not exists storedb.storage
 (
     product_id bigint  not null
         primary key
         constraint fkpomua9n0dfb2v8h2wv063epie
-            references storedb.product
-            on delete cascade,
+            references storedb.product,
     count      integer not null
 );
+
+alter table storedb.storage
+    owner to postgres;
+

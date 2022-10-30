@@ -4,6 +4,7 @@ public enum Stauts {
 
     NEW,
     IN_PROGRESS,
-    SEND
+    FINISHED,
+    CANCELLED
 
 }

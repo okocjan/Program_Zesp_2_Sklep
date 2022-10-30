@@ -2,8 +2,6 @@ package com.example.demo.app.service;
 
 import com.example.demo.app.model.dto.ProductPersistDto;
 import com.example.demo.app.model.dto.ProductUpdateDto;
-import com.example.demo.app.model.dto.projection.ProductListDto;
-import com.example.demo.app.model.dto.projection.ProductPageDto;
 import com.example.demo.app.model.entity.Product;
 import com.example.demo.app.repository.ProductRepository;
 import org.slf4j.Logger;
@@ -11,10 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.example.demo.app.model.entity.Product.createProductToPersist;
 import static com.example.demo.app.model.entity.Product.createProductToUpdate;
@@ -33,11 +28,10 @@ public class ProductServiceImpl implements IProductService {
 
 
     @Override
-    public Set<ProductListDto> getAllProductsWithPicture() {
+    public Set<Product> getAllProductsWithPicture() {
         try {
             log.info("Getting products with picture.");
-            Set<ProductListDto> productListDtos = productRepository.getProductsListWithPicture();
-            return productListDtos;
+            return new HashSet<>(productRepository.findAll());
         } catch (Exception e) {
             log.error("Getting products with picture failed!!!\n{0}", e);
             return Collections.emptySet();
@@ -46,11 +40,10 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ProductPageDto getProductPage(Long id) {
+    public Optional<Product> getProductPage(Long id) {
         try {
             log.info("Trying to find product with id: {}", id);
-            Optional<ProductPageDto> productPage = productRepository.getProductPage(id);
-            return productPage.orElseThrow();
+            return productRepository.findById(id);
         } catch (NoSuchElementException e) {
             log.warn("Element not found!!!", e);
         } catch (Exception e) {
