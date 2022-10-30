@@ -3,6 +3,7 @@ package com.example.demo.app.controller;
 import com.example.demo.app.model.dto.ProductPersistDto;
 import com.example.demo.app.model.dto.ProductUpdateDto;
 import com.example.demo.app.model.entity.Product;
+import com.example.demo.app.model.responses.ProductResponse;
 import com.example.demo.app.service.IProductService;
 import com.example.demo.app.tools.Constants;
 import io.swagger.annotations.Api;
@@ -34,7 +35,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<ProductResponse> getAll() {
         Set<Product> result = productService.getAllProductsWithPicture();
         return !result.isEmpty()
                 ? new ResponseEntity<>(success(result), HttpStatus.OK)
@@ -42,7 +43,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProduct(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable(name = "id") Long id) {
         Optional<Product> result = productService.getProductPage(id);
         return result
                 .map(product -> new ResponseEntity<>(success(product), HttpStatus.OK))
@@ -50,7 +51,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addProduct(@RequestBody @Valid ProductPersistDto productPersistDto,
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody @Valid ProductPersistDto productPersistDto,
                                       BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(failed(result), HttpStatus.BAD_REQUEST);
@@ -60,8 +61,8 @@ public class ProductController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateProduct(@RequestBody @Valid ProductUpdateDto product,
-                                         BindingResult result) {
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody @Valid ProductUpdateDto product,
+                                                         BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(failed(result), HttpStatus.BAD_REQUEST);
         }
@@ -70,7 +71,7 @@ public class ProductController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteProduct(@RequestParam Long id) {
+    public ResponseEntity<ProductResponse> deleteProduct(@RequestParam Long id) {
         Boolean result = productService.deleteProduct(id);
         return result
                 ? new ResponseEntity<>(success(), HttpStatus.OK)
