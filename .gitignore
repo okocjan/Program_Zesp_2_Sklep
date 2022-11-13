@@ -33,7 +33,6 @@ ivy-cache
 argfile*
 activemq-data/
 classes/
-.jpb
 
 # Log files
 jxl.log

@@ -4,18 +4,21 @@ import com.example.demo.app.model.dto.ProductPersistDto;
 import com.example.demo.app.model.dto.ProductUpdateDto;
 import com.example.demo.app.model.entity.Product;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 public interface IProductService {
 
-    Set<Product> getAllProductsWithPicture();
+    Set<Product> getAllProducts();
 
-    Optional<Product> getProductPage(Long id);
+    Optional<Product> getProductById(Long id);
 
     Product addProduct(ProductPersistDto product);
 
     Product updateProduct(ProductUpdateDto product);
 
     Boolean deleteProduct(Long id);
+
+    List<Product> getAllProductsById(List<Long> ids);
 }
