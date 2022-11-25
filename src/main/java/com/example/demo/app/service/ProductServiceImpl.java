@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static com.example.demo.app.model.factory.ProductFactory.createProductToPersist;
-import static com.example.demo.app.model.factory.ProductFactory.createProductToUpdate;
+import static com.example.demo.app.model.factory.ProductCreator.createProductToPersist;
+import static com.example.demo.app.model.factory.ProductCreator.createProductToUpdate;
 
 @Service
 public class ProductServiceImpl implements IProductService {

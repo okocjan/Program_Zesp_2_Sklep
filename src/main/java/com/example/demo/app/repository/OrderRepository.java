@@ -14,7 +14,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Set<Order> findOrdersByStatusOrderByOrderDate(@Param(value = "status") Status status);
 
-    Set<Order> findOrdersByStatusAndIdInOrderByOrderDate(@Param(value = "status") Status status,
-                                                         @Param(value = "id") List<Long> id);
+    Set<Order> findOrdersByIdInOrderByOrderDate(@Param(value = "id") List<Long> id);
 
 }

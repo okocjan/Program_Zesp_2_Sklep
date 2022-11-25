@@ -9,6 +9,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQL81Dialect
+#    generate-ddl: true
   main:
     banner-mode: off
   mvc:

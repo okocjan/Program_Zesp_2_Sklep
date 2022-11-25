@@ -25,9 +25,9 @@ create table if not exists storedb."order"
     phone_number    varchar(12)      not null,
     status          varchar(15)      not null,
     total_price     double precision not null,
-    tracking_number varchar(150)     not null,
+    tracking_number uuid default gen_random_uuid(),
     discount_id     bigint
-        constraint fk7jd3v7xxhgpkgfxu4e8jojqlt
+        constraint fkap5cfg4japnftnsmgl3mboeq8
             references storedb.discount_code
 );
 
@@ -60,23 +60,6 @@ create table if not exists storedb.product_picture
 alter table storedb.product_picture
     owner to postgres;
 
-create table if not exists storedb.ref_product_order
-(
-    id         serial
-        primary key,
-    order_id   bigint not null
-        constraint fkbds4bkb025gvq65acw9l61jjx
-            references storedb."order"
-            on delete cascade,
-    product_id bigint not null
-        constraint fk3x3r6mfkne615sd63x3gxcrno
-            references storedb.product
-            on delete cascade
-);
-
-alter table storedb.ref_product_order
-    owner to postgres;
-
 create table if not exists storedb.storage
 (
     product_id bigint  not null
@@ -87,5 +70,20 @@ create table if not exists storedb.storage
 );
 
 alter table storedb.storage
+    owner to postgres;
+
+create table if not exists storedb.product_order
+(
+    id         bigserial
+        primary key,
+    product_id bigint not null
+        constraint fkh73acsd9s5wp6l0e55td6jr1m
+            references storedb.product,
+    order_id   bigint
+        constraint fk3jr9baphl9xkprqhtl94vn98e
+            references storedb."order"
+);
+
+alter table storedb.product_order
     owner to postgres;
 

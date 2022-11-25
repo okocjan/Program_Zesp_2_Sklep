@@ -5,7 +5,7 @@ import com.example.demo.app.model.dto.ProductUpdateDto;
 import com.example.demo.app.model.entity.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class ProductFactory {
+public class ProductCreator {
 
     public static Product createProductToUpdate(ProductUpdateDto dto) {
         return new Product(dto.getId(), dto.getName(), dto.getCapacity(), dto.getPrice(), dto.getType(),

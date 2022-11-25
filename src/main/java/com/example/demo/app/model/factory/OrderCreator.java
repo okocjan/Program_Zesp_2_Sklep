@@ -10,7 +10,7 @@ import com.example.demo.app.model.entity.custom.Status;
 import java.time.LocalDate;
 import java.util.List;
 
-public class OrderFactory {
+public class OrderCreator {
 
     public static Order createOrderToUpdate(OrderUpdateDto dto) {
         return new Order(dto.getId(), dto.getName(), dto.getLastName(), dto.getEmail(), dto.getPhoneNumber(),

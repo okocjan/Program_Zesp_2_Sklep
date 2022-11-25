@@ -45,7 +45,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderResponse> getProduct(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable(name = "id") Long id) {
         Optional<Order> result = orderService.getOrder(id);
         return result
                 .map(order -> new ResponseEntity<>(success(order), HttpStatus.OK))
@@ -53,8 +53,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderResponse> addProduct(@RequestBody @Valid OrderPersistDto order,
-                                                      BindingResult result) {
+    public ResponseEntity<OrderResponse> addOrder(@RequestBody @Valid OrderPersistDto order,
+                                                  BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(failed(result), HttpStatus.BAD_REQUEST);
         }
@@ -63,8 +63,8 @@ public class OrderController {
     }
 
     @PutMapping
-    public ResponseEntity<OrderResponse> updateProduct(@RequestBody @Valid OrderUpdateDto order,
-                                                         BindingResult result) {
+    public ResponseEntity<OrderResponse> updateOrder(@RequestBody @Valid OrderUpdateDto order,
+                                                     BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(failed(result), HttpStatus.BAD_REQUEST);
         }
