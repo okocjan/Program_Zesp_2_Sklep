@@ -1,6 +1,6 @@
 package com.example.demo.app.model.entity.custom;
 
-public enum Stauts {
+public enum Status {
 
     NEW,
     IN_PROGRESS,

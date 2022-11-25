@@ -1,20 +1,22 @@
 package com.example.demo.app.model.entity;
 
 import com.example.demo.app.model.entity.custom.DeliveryType;
-import com.example.demo.app.model.entity.custom.Stauts;
+import com.example.demo.app.model.entity.custom.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Table(name = "\"order\"", schema = "storedb")
+@Table(name = "order", schema = "storedb")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -37,24 +39,21 @@ public class Order implements Serializable {
     private String address;
     @Column(name = "total_price", nullable = false, precision = 2)
     private Double totalPrice;
-    @Column(name = "tracking_number", nullable = false, length = 150)
-    private String trackingNumber;
+    @Column(name = "tracking_number", columnDefinition = "uuid default gen_random_uuid()")
+    @Type(type= "org.hibernate.type.PostgresUUIDType")
+    private UUID trackingNumber;
     @Column(name = "order_date", nullable = false, length = 30)
     private LocalDate orderDate;
     @Column(name = "status", nullable = false, length = 15)
     @Enumerated(EnumType.STRING)
-    private Stauts status;
-    @Column(name = "deliveryType", nullable = false, length = 10)
+    private Status status;
+    @Column(name = "delivery_type", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
     private DeliveryType deliveryType;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")
     private DiscountCode discount;
-
-    @ManyToMany(mappedBy = "orders", cascade = {
-            CascadeType.PERSIST, CascadeType.MERGE
-    })
+    @ManyToMany(mappedBy = "orders")
     private List<Product> products = new ArrayList<>();
 
 }

@@ -1,7 +1,5 @@
 package com.example.demo.app.model.entity;
 
-import com.example.demo.app.model.dto.ProductPersistDto;
-import com.example.demo.app.model.dto.ProductUpdateDto;
 import com.example.demo.app.model.entity.custom.ProductType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -38,17 +36,18 @@ public class Product implements Serializable {
     @Enumerated(EnumType.STRING)
     private ProductType type;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "produkty_zamowienie",
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "product_order",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
-    @JsonIgnore
     private Set<Order> orders = new LinkedHashSet<>();
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Storage storage;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private ProductPicture productPicture;
 
@@ -61,11 +60,15 @@ public class Product implements Serializable {
         this.type = type;
         this.description = description;
         this.storage = new Storage();
-        this.storage.setProductId(id);
+        this.storage.setId(id);
         this.storage.setCount(quantity);
         this.productPicture = new ProductPicture();
         this.productPicture.setId(id);
         this.productPicture.setSource(source);
+    }
+
+    public Product(Long id) {
+        this.id = id;
     }
 
     public Product(String name, Integer capacity, Double price, ProductType type, String description,
@@ -76,22 +79,10 @@ public class Product implements Serializable {
         this.type = type;
         this.description = description;
         this.storage = new Storage();
-        this.storage.setProductId(id);
+        this.storage.setId(id);
         this.storage.setCount(quantity);
         this.productPicture = new ProductPicture();
         this.productPicture.setId(id);
         this.productPicture.setSource(source);
-    }
-
-    @JsonIgnore
-    public static Product createProductToUpdate(ProductUpdateDto dto) {
-        return new Product(dto.getId(), dto.getName(), dto.getCapacity(), dto.getPrice(), dto.getType(),
-                dto.getDescription(), dto.getQuantity(), dto.getSource());
-    }
-
-    @JsonIgnore
-    public static Product createProductToPersist(ProductPersistDto dto) {
-        return new Product(dto.getName(), dto.getCapacity(), dto.getPrice(), dto.getType(),
-                dto.getDescription(), dto.getQuantity(), dto.getSource());
     }
 }
