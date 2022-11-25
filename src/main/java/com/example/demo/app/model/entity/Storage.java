@@ -20,11 +20,11 @@ public class Storage implements Serializable {
     @Id
     @Column(name = "product_id")
     @JsonIgnore
-    private Long productId;
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product_id", nullable = false)
     @MapsId
+    @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnore
     private Product product;
 

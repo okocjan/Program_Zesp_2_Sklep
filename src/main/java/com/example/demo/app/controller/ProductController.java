@@ -36,7 +36,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<ProductResponse> getAll() {
-        Set<Product> result = productService.getAllProductsWithPicture();
+        Set<Product> result = productService.getAllProducts();
         return !result.isEmpty()
                 ? new ResponseEntity<>(success(result), HttpStatus.OK)
                 : new ResponseEntity<>(failed(Constants.NO_PRODUCTS_FOUND_MESSAGE), HttpStatus.NOT_FOUND);
@@ -44,7 +44,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable(name = "id") Long id) {
-        Optional<Product> result = productService.getProductPage(id);
+        Optional<Product> result = productService.getProductById(id);
         return result
                 .map(product -> new ResponseEntity<>(success(product), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(failed(Constants.ELEMENT_NOT_FOUND_MESSAGE), HttpStatus.NOT_FOUND));
@@ -52,7 +52,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponse> addProduct(@RequestBody @Valid ProductPersistDto productPersistDto,
-                                      BindingResult result) {
+                                                      BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(failed(result), HttpStatus.BAD_REQUEST);
         }
