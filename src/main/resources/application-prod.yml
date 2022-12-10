@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgresql-study-storedb.cgpig1o06tc3.eu-central-1.rds.amazonaws.com:5432/postgres
+    url: jdbc:postgresql://34.116.203.11:5432/postgres
     username: postgres
-    password: 6Dffwf5HHe2kpHZfJEHK
+    password: H|7Qp]:=f6VUq]]%
   flyway:
-    url: jdbc:postgresql://postgresql-study-storedb.cgpig1o06tc3.eu-central-1.rds.amazonaws.com:5432/postgres
+    url: jdbc:postgresql://34.116.203.11:5432/postgres
     user: postgres
-    password: 6Dffwf5HHe2kpHZfJEHK
+    password: H|7Qp]:=f6VUq]]%
     schemas: storedb
   jpa:
     show-sql: false

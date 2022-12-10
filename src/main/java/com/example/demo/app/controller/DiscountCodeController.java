@@ -1,6 +1,6 @@
 package com.example.demo.app.controller;
 
-import com.example.demo.app.model.dto.DiscountCodeDto;
+import com.example.demo.app.model.dto.DiscountCodePersistDto;
 import com.example.demo.app.model.entity.DiscountCode;
 import com.example.demo.app.model.responses.DiscountCodeResponse;
 import com.example.demo.app.service.DiscountCodeService;
@@ -19,7 +19,7 @@ import static com.example.demo.app.model.responses.DiscountCodeResponse.failed;
 import static com.example.demo.app.model.responses.DiscountCodeResponse.success;
 
 @Controller
-@RequestMapping("/discount")
+@RequestMapping("/discounts")
 @Api(tags = "Discounts", description = "Discounts API")
 @CrossOrigin
 public class DiscountCodeController {
@@ -46,7 +46,7 @@ public class DiscountCodeController {
                 .orElseGet(() -> new ResponseEntity<>(failed(Constants.ELEMENT_NOT_FOUND_MESSAGE), HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/toogle")
+    @PutMapping("/toggle")
     public ResponseEntity<DiscountCodeResponse> toggleCode(@RequestParam List<Long> ids) {
         boolean result = discountCodeService.toggleCode(ids);
         return result ? new ResponseEntity<>(success(), HttpStatus.OK)
@@ -54,12 +54,12 @@ public class DiscountCodeController {
     }
 
     @PostMapping
-    public ResponseEntity<DiscountCodeResponse> addDiscountCode(@RequestBody DiscountCodeDto discountCodeDto,
+    public ResponseEntity<DiscountCodeResponse> addDiscountCode(@RequestBody DiscountCodePersistDto discountCodePersistDto,
                                                                 BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(DiscountCodeResponse.failed(result), HttpStatus.BAD_REQUEST);
         }
-        DiscountCode toReturn = discountCodeService.addDiscountCode(discountCodeDto);
+        DiscountCode toReturn = discountCodeService.addDiscountCode(discountCodePersistDto);
         return new ResponseEntity<>(success(toReturn), HttpStatus.OK);
     }
 }

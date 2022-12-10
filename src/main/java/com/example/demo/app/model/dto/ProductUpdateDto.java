@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,8 +18,6 @@ public class ProductUpdateDto {
 
     @NotNull(message = "Field id can not be null.")
     private Long id;
-    @NotNull(message = "Field capacity can not be null.")
-    private Integer capacity;
     @NotNull(message = "Field description can not be null.")
     @Size(max = 2048, message = "Field description can not exceed 2048 characters.")
     private String description;
@@ -31,8 +30,7 @@ public class ProductUpdateDto {
     private ProductType type;
     @NotNull(message = "Field quantity can not be null.")
     private Integer quantity;
-    @NotNull(message = "Field source can not be null.")
-    @Size(max = 1024, message = "Field source can not exceed 1024 characters.")
-    private String source;
+    @NotNull(message = "Field image can not be null.")
+    private MultipartFile image;
 
 }

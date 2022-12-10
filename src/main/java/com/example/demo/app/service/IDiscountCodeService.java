@@ -1,6 +1,6 @@
 package com.example.demo.app.service;
 
-import com.example.demo.app.model.dto.DiscountCodeDto;
+import com.example.demo.app.model.dto.DiscountCodePersistDto;
 import com.example.demo.app.model.entity.DiscountCode;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public interface IDiscountCodeService {
 
     Optional<DiscountCode> getByCode(String code);
 
-    DiscountCode addDiscountCode(DiscountCodeDto discountCodeDto);
+    DiscountCode addDiscountCode(DiscountCodePersistDto discountCodePersistDto);
 
     boolean toggleCode(List<Long> ids);
 

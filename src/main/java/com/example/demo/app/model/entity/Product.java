@@ -28,8 +28,6 @@ public class Product implements Serializable {
     private String name;
     @Column(name = "description", nullable = false, length = 2048)
     private String description;
-    @Column(name = "capacity", nullable = false)
-    private Integer capacity;
     @Column(name = "price", nullable = false)
     private Double price;
     @Column(name = "type", nullable = false)
@@ -51,11 +49,10 @@ public class Product implements Serializable {
     @PrimaryKeyJoinColumn
     private ProductPicture productPicture;
 
-    public Product(Long id, String name, Integer capacity, Double price, ProductType type, String description,
+    public Product(Long id, String name, Double price, ProductType type, String description,
                    Integer quantity, String source) {
         this.id = id;
         this.name = name;
-        this.capacity = capacity;
         this.price = price;
         this.type = type;
         this.description = description;
@@ -71,10 +68,9 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Product(String name, Integer capacity, Double price, ProductType type, String description,
+    public Product(String name, Double price, ProductType type, String description,
                    Integer quantity, String source) {
         this.name = name;
-        this.capacity = capacity;
         this.price = price;
         this.type = type;
         this.description = description;

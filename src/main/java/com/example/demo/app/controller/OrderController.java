@@ -24,7 +24,7 @@ import static com.example.demo.app.model.responses.OrderResponse.failed;
 import static com.example.demo.app.model.responses.OrderResponse.success;
 
 @Controller
-@RequestMapping("/order")
+@RequestMapping("/orders")
 @Api(tags = "Orders", description = "Orders API")
 @CrossOrigin
 public class OrderController {

@@ -8,7 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.example.demo.app.model.factory.ProductCreator.createProductToPersist;
@@ -55,7 +62,9 @@ public class ProductServiceImpl implements IProductService {
     public Product addProduct(ProductPersistDto product) {
         try {
             log.info("Trying to save product.");
-            Product toSave = createProductToPersist(product);
+            // todo: move to gcs
+            String path = uploadProductPicture(product.getImage(), product.getName());
+            Product toSave = createProductToPersist(product, path);
             toSave.getProductPicture().setProduct(toSave);
             toSave.getStorage().setProduct(toSave);
             return productRepository.save(toSave);
@@ -65,11 +74,13 @@ public class ProductServiceImpl implements IProductService {
         }
     }
 
+    @Transactional
     @Override
     public Product updateProduct(ProductUpdateDto product) {
         try {
             log.info("Trying to update product.");
-            Product toSave = createProductToUpdate(product);
+            String path = uploadProductPicture(product.getImage(), product.getName());
+            Product toSave = createProductToUpdate(product, path);
             toSave.getProductPicture().setProduct(toSave);
             toSave.getStorage().setProduct(toSave);
             return productRepository.save(toSave);
@@ -77,6 +88,25 @@ public class ProductServiceImpl implements IProductService {
             log.error("Error while updating product!!!\n{0}", e);
             return null;
         }
+    }
+
+    private String uploadProductPicture(MultipartFile file, String name) throws Exception {
+        String savedFilePath = Files.createFile(prepareFilePath(name)).toString();
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(savedFilePath));
+        outputStream.write(file.getBytes());
+        outputStream.flush();
+        outputStream.close();
+
+        return savedFilePath;
+    }
+
+    private Path prepareFilePath(String name) {
+        return Path.of(System.getProperty("user.dir") + "/uploads/" + name + "_" +
+                LocalDateTime.now().toString()
+                        .replace("-", "_")
+                        .replace(":", "_")
+                        .replace(".", "_")
+                + ".png");
     }
 
     @Override
