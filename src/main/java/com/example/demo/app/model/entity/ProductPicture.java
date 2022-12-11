@@ -21,14 +21,15 @@ public class ProductPicture implements Serializable {
     @Column(name = "product_id", nullable = false)
     @JsonIgnore
     private Long id;
-
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId
     @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnore
     private Product product;
-
     @Column(name = "source", nullable = false, length = 1024)
     private String source;
+    @Column(name = "delete_hash", nullable = false, length = 1024)
+    @JsonIgnore
+    private String deleteHash;
 
 }

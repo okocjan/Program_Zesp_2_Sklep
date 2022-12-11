@@ -6,13 +6,13 @@ import com.example.demo.app.model.entity.Product;
 
 public class ProductCreator {
 
-    public static Product createProductToUpdate(ProductUpdateDto dto, String source) {
+    public static Product createProductToUpdate(ProductUpdateDto dto, String source, String deleteHash) {
         return new Product(dto.getId(), dto.getName(), dto.getPrice(), dto.getType(),
-                dto.getDescription(), dto.getQuantity(), source);
+                dto.getDescription(), dto.getQuantity(), source, deleteHash);
     }
 
-    public static Product createProductToPersist(ProductPersistDto dto, String source) {
+    public static Product createProductToPersist(ProductPersistDto dto, String source, String deleteHash) {
         return new Product(dto.getName(), dto.getPrice(), dto.getType(),
-                dto.getDescription(), dto.getQuantity(), source);
+                dto.getDescription(), dto.getQuantity(), source, deleteHash);
     }
 }

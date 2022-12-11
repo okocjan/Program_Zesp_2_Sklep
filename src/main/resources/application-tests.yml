@@ -1,8 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://34.116.191.144:5432/postgres
-    username: postgres
-    password: H|7Qp]:=f6VUq]]%
-  jpa:
-    hibernate:
-      ddl-auto: none

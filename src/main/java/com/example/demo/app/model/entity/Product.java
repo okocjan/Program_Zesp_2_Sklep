@@ -50,18 +50,14 @@ public class Product implements Serializable {
     private ProductPicture productPicture;
 
     public Product(Long id, String name, Double price, ProductType type, String description,
-                   Integer quantity, String source) {
+                   Integer quantity, String source, String deleteHash) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.type = type;
         this.description = description;
-        this.storage = new Storage();
-        this.storage.setId(id);
-        this.storage.setCount(quantity);
-        this.productPicture = new ProductPicture();
-        this.productPicture.setId(id);
-        this.productPicture.setSource(source);
+        this.storage = new Storage(id, null, quantity);
+        this.productPicture = new ProductPicture(id, null, source, deleteHash);
     }
 
     public Product(Long id) {
@@ -69,16 +65,12 @@ public class Product implements Serializable {
     }
 
     public Product(String name, Double price, ProductType type, String description,
-                   Integer quantity, String source) {
+                   Integer quantity, String source, String deleteHash) {
         this.name = name;
         this.price = price;
         this.type = type;
         this.description = description;
-        this.storage = new Storage();
-        this.storage.setId(id);
-        this.storage.setCount(quantity);
-        this.productPicture = new ProductPicture();
-        this.productPicture.setId(id);
-        this.productPicture.setSource(source);
+        this.storage = new Storage(id, null, quantity);
+        this.productPicture = new ProductPicture(id, null, source, deleteHash);
     }
 }
