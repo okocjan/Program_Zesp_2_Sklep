@@ -1,6 +1,6 @@
 package com.example.demo.app.service;
 
-import com.example.demo.app.model.dto.DiscountCodeDto;
+import com.example.demo.app.model.dto.DiscountCodePersistDto;
 import com.example.demo.app.model.entity.DiscountCode;
 import com.example.demo.app.repository.DiscountCodeRepository;
 import org.slf4j.Logger;
@@ -46,10 +46,10 @@ public class DiscountCodeService implements IDiscountCodeService {
     }
 
     @Override
-    public DiscountCode addDiscountCode(DiscountCodeDto discountCodeDto) {
+    public DiscountCode addDiscountCode(DiscountCodePersistDto discountCodePersistDto) {
         try {
             logger.info("Trying to persist discountCode");
-            return discountCodeRepository.saveAndFlush(createDiscountCode(discountCodeDto));
+            return discountCodeRepository.saveAndFlush(createDiscountCode(discountCodePersistDto));
         } catch (Exception e) {
             logger.error("Error while trying to get discountCode by code", e);
             return null;

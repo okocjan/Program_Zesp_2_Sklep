@@ -28,8 +28,6 @@ public class Product implements Serializable {
     private String name;
     @Column(name = "description", nullable = false, length = 2048)
     private String description;
-    @Column(name = "capacity", nullable = false)
-    private Integer capacity;
     @Column(name = "price", nullable = false)
     private Double price;
     @Column(name = "type", nullable = false)
@@ -51,38 +49,28 @@ public class Product implements Serializable {
     @PrimaryKeyJoinColumn
     private ProductPicture productPicture;
 
-    public Product(Long id, String name, Integer capacity, Double price, ProductType type, String description,
-                   Integer quantity, String source) {
+    public Product(Long id, String name, Double price, ProductType type, String description,
+                   Integer quantity, String source, String deleteHash) {
         this.id = id;
         this.name = name;
-        this.capacity = capacity;
         this.price = price;
         this.type = type;
         this.description = description;
-        this.storage = new Storage();
-        this.storage.setId(id);
-        this.storage.setCount(quantity);
-        this.productPicture = new ProductPicture();
-        this.productPicture.setId(id);
-        this.productPicture.setSource(source);
+        this.storage = new Storage(id, null, quantity);
+        this.productPicture = new ProductPicture(id, null, source, deleteHash);
     }
 
     public Product(Long id) {
         this.id = id;
     }
 
-    public Product(String name, Integer capacity, Double price, ProductType type, String description,
-                   Integer quantity, String source) {
+    public Product(String name, Double price, ProductType type, String description,
+                   Integer quantity, String source, String deleteHash) {
         this.name = name;
-        this.capacity = capacity;
         this.price = price;
         this.type = type;
         this.description = description;
-        this.storage = new Storage();
-        this.storage.setId(id);
-        this.storage.setCount(quantity);
-        this.productPicture = new ProductPicture();
-        this.productPicture.setId(id);
-        this.productPicture.setSource(source);
+        this.storage = new Storage(id, null, quantity);
+        this.productPicture = new ProductPicture(id, null, source, deleteHash);
     }
 }

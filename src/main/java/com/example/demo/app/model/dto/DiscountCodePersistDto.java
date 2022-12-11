@@ -9,11 +9,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class DiscountCodeDto {
+public class DiscountCodePersistDto {
 
-    private Long id;
     private String code;
     private Integer discount;
-    private boolean active;
 
 }

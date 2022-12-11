@@ -1,5 +1,7 @@
 package com.example.demo.app.service;
 
+import com.example.demo.app.model.dto.ImgurResponse;
+import com.example.demo.app.model.dto.ImgurResponseData;
 import com.example.demo.app.model.dto.ProductPersistDto;
 import com.example.demo.app.model.dto.ProductUpdateDto;
 import com.example.demo.app.model.entity.Product;
@@ -8,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 import static com.example.demo.app.model.factory.ProductCreator.createProductToPersist;
@@ -19,10 +23,12 @@ public class ProductServiceImpl implements IProductService {
 
     private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductRepository productRepository;
+    private final IFileHelperService fileHelperService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, IFileHelperService fileHelperService) {
         this.productRepository = productRepository;
+        this.fileHelperService = fileHelperService;
     }
 
 
@@ -55,7 +61,9 @@ public class ProductServiceImpl implements IProductService {
     public Product addProduct(ProductPersistDto product) {
         try {
             log.info("Trying to save product.");
-            Product toSave = createProductToPersist(product);
+            ImgurResponse savedFile = fileHelperService.uploadFile(product.getImage(), product.getName());
+            ImgurResponseData data = savedFile.getData();
+            Product toSave = createProductToPersist(product, data.getLink(), data.getDeleteHash());
             toSave.getProductPicture().setProduct(toSave);
             toSave.getStorage().setProduct(toSave);
             return productRepository.save(toSave);
@@ -65,11 +73,14 @@ public class ProductServiceImpl implements IProductService {
         }
     }
 
+    @Transactional
     @Override
     public Product updateProduct(ProductUpdateDto product) {
         try {
             log.info("Trying to update product.");
-            Product toSave = createProductToUpdate(product);
+            deleteOldProductImage(product.getId());
+            ImgurResponseData data = uploadImageToImgur(product.getImage(), product.getName());
+            Product toSave = createProductToUpdate(product, data.getLink(), data.getDeleteHash());
             toSave.getProductPicture().setProduct(toSave);
             toSave.getStorage().setProduct(toSave);
             return productRepository.save(toSave);
@@ -77,6 +88,16 @@ public class ProductServiceImpl implements IProductService {
             log.error("Error while updating product!!!\n{0}", e);
             return null;
         }
+    }
+
+    private void deleteOldProductImage(Long id) {
+
+    }
+
+    private ImgurResponseData uploadImageToImgur(MultipartFile file, String name) {
+        ImgurResponse savedFile = fileHelperService.uploadFile(file, name);
+        ImgurResponseData data = savedFile.getData();
+        return data;
     }
 
     @Override
