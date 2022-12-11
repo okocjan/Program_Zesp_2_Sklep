@@ -9,6 +9,7 @@ import com.example.demo.app.tools.Constants;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,7 +23,7 @@ import static com.example.demo.app.model.responses.ProductResponse.failed;
 import static com.example.demo.app.model.responses.ProductResponse.success;
 
 @Controller
-@RequestMapping("/product")
+@RequestMapping("/products")
 @Api(tags = "Products", description = "Products API")
 @CrossOrigin
 public class ProductController {
@@ -50,8 +51,11 @@ public class ProductController {
                 .orElseGet(() -> new ResponseEntity<>(failed(Constants.ELEMENT_NOT_FOUND_MESSAGE), HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
-    public ResponseEntity<ProductResponse> addProduct(@RequestBody @Valid ProductPersistDto productPersistDto,
+    @PostMapping(consumes = {
+            MediaType.MULTIPART_FORM_DATA_VALUE,
+            MediaType.APPLICATION_JSON_VALUE
+    })
+    public ResponseEntity<ProductResponse> addProduct(@ModelAttribute @Valid ProductPersistDto productPersistDto,
                                                       BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(failed(result), HttpStatus.BAD_REQUEST);
