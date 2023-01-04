@@ -1,4 +1,4 @@
 runtime: java17
 
 env_variables:
-  spring_profiles_active: "prod"
+  SPRING_PROFILES_ACTIVE: "prod"

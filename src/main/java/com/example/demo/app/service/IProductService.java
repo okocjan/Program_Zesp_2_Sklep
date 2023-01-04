@@ -2,6 +2,7 @@ package com.example.demo.app.service;
 
 import com.example.demo.app.model.dto.ProductPersistDto;
 import com.example.demo.app.model.dto.ProductUpdateDto;
+import com.example.demo.app.model.dto.StorageUpdateDto;
 import com.example.demo.app.model.entity.Product;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface IProductService {
     Boolean deleteProduct(Long id);
 
     List<Product> getAllProductsById(List<Long> ids);
+
+    boolean updateProductQuantity(StorageUpdateDto updateDto);
 }
