@@ -24,4 +24,6 @@ public interface IProductService {
     List<Product> getAllProductsById(List<Long> ids);
 
     boolean updateProductQuantity(StorageUpdateDto updateDto);
+
+    List<Product> getAllProductsByIdWithDuplicates(List<Long> ids);
 }

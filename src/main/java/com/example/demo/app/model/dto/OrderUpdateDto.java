@@ -1,6 +1,5 @@
 package com.example.demo.app.model.dto;
 
-import com.example.demo.app.model.entity.DiscountCode;
 import com.example.demo.app.model.entity.custom.DeliveryType;
 import com.example.demo.app.model.entity.custom.Status;
 import lombok.AllArgsConstructor;
@@ -44,6 +43,6 @@ public class OrderUpdateDto {
     @NotNull(message = "Field deliveryType can not be null.")
     @Size(max = 10, message = "Field deliveryType can not exceed 10 characters.")
     private DeliveryType deliveryType;
-    private DiscountCode discount;
+    private String discount;
 
 }

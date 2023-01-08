@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -59,6 +60,9 @@ public class OrderController {
             return new ResponseEntity<>(failed(result), HttpStatus.BAD_REQUEST);
         }
         Order toReturn = orderService.addOrder(order);
+        if (Objects.isNull(toReturn)) {
+            return new ResponseEntity<>(failed("Adding order failed."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>(success(toReturn), HttpStatus.OK);
     }
 

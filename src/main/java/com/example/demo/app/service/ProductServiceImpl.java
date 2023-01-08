@@ -120,6 +120,8 @@ public class ProductServiceImpl implements IProductService {
         return productRepository.findAllByIdIn(ids);
     }
 
+
+
     @Override
     public boolean updateProductQuantity(StorageUpdateDto updateDto) {
         try {
@@ -132,6 +134,19 @@ public class ProductServiceImpl implements IProductService {
             log.error("Error while trying to update product quantity");
             return false;
         }
+    }
+
+    @Transactional
+    @Override
+    public List<Product> getAllProductsByIdWithDuplicates(List<Long> ids) {
+        productRepository.createTmpTableForIds();
+        for (Long id : ids) {
+            log.info("inserting into tmpoo table");
+            productRepository.insertIdIntoTmpTable(id);
+        }
+        List<Product> productList = productRepository.findAllByIdInWithDuplicates();
+        productRepository.dropTmpTableWithIds();
+        return productList;
     }
 
 }
