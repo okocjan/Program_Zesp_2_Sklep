@@ -59,7 +59,6 @@ public class FileHelperServiceImpl implements IFileHelperService {
     public boolean deleteFile(String deleteHash) {
         try {
             Unirest.delete("https://api.imgur.com/3/image/" + deleteHash)
-//                    .header(HttpHeaders.AUTHORIZATION, getAuthHeader())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                     .asString();
             return true;
@@ -85,10 +84,6 @@ public class FileHelperServiceImpl implements IFileHelperService {
                 .replace(":", "_")
                 .replace(" ", "_")
                 .replace(".", "_") + ".png";
-    }
-
-    private String getAuthHeader() {
-        return "Client-ID " + CLIENT_ID;
     }
 
 }

@@ -31,4 +31,9 @@ public class Storage implements Serializable {
     @Column(name = "count", nullable = false)
     private Integer count;
 
+    @JsonIgnore
+    public void substractQuantity() {
+        this.count--;
+    }
+
 }
