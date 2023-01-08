@@ -2,8 +2,10 @@ package com.example.demo.app.controller;
 
 import com.example.demo.app.model.dto.ProductPersistDto;
 import com.example.demo.app.model.dto.ProductUpdateDto;
+import com.example.demo.app.model.dto.StorageUpdateDto;
 import com.example.demo.app.model.entity.Product;
 import com.example.demo.app.model.responses.ProductResponse;
+import com.example.demo.app.model.responses.StorageResponse;
 import com.example.demo.app.service.IProductService;
 import com.example.demo.app.tools.Constants;
 import io.swagger.annotations.Api;
@@ -80,6 +82,19 @@ public class ProductController {
         return result
                 ? new ResponseEntity<>(success(), HttpStatus.OK)
                 : new ResponseEntity<>(failed(Constants.ELEMENT_NOT_FOUND_MESSAGE), HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/storage")
+    public ResponseEntity<StorageResponse> updateProductQuantity(@RequestBody @Valid StorageUpdateDto updateDto,
+                                                                 BindingResult result) {
+        if (result.hasErrors()) {
+            return new ResponseEntity<>(StorageResponse.failed(result), HttpStatus.BAD_REQUEST);
+        }
+        boolean updateResult = productService.updateProductQuantity(updateDto);
+        StorageResponse toRet = updateResult
+                ? StorageResponse.success()
+                : StorageResponse.failed("Something went wrong");
+        return new ResponseEntity<>(toRet, updateResult ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

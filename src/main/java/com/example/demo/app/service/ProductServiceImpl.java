@@ -1,11 +1,10 @@
 package com.example.demo.app.service;
 
-import com.example.demo.app.model.dto.ImgurResponse;
-import com.example.demo.app.model.dto.ImgurResponseData;
-import com.example.demo.app.model.dto.ProductPersistDto;
-import com.example.demo.app.model.dto.ProductUpdateDto;
+import com.example.demo.app.model.dto.*;
 import com.example.demo.app.model.entity.Product;
+import com.example.demo.app.model.entity.Storage;
 import com.example.demo.app.repository.ProductRepository;
+import com.example.demo.app.repository.StorageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +23,15 @@ public class ProductServiceImpl implements IProductService {
     private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductRepository productRepository;
     private final IFileHelperService fileHelperService;
+    private final StorageRepository storageRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, IFileHelperService fileHelperService) {
+    public ProductServiceImpl(ProductRepository productRepository,
+                              IFileHelperService fileHelperService,
+                              StorageRepository storageRepository) {
         this.productRepository = productRepository;
         this.fileHelperService = fileHelperService;
+        this.storageRepository = storageRepository;
     }
 
 
@@ -115,6 +118,35 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public List<Product> getAllProductsById(List<Long> ids) {
         return productRepository.findAllByIdIn(ids);
+    }
+
+
+
+    @Override
+    public boolean updateProductQuantity(StorageUpdateDto updateDto) {
+        try {
+            log.info("Trying to update product quantity. ProductId: {}", updateDto.getProductId());
+            Storage toUpdate = new Storage(updateDto.getProductId(), null, updateDto.getQuantity());
+            storageRepository.saveAndFlush(toUpdate);
+            log.info("Updating product quantity successful");
+            return true;
+        } catch (Exception e) {
+            log.error("Error while trying to update product quantity");
+            return false;
+        }
+    }
+
+    @Transactional
+    @Override
+    public List<Product> getAllProductsByIdWithDuplicates(List<Long> ids) {
+        productRepository.createTmpTableForIds();
+        for (Long id : ids) {
+            log.info("inserting into tmpoo table");
+            productRepository.insertIdIntoTmpTable(id);
+        }
+        List<Product> productList = productRepository.findAllByIdInWithDuplicates();
+        productRepository.dropTmpTableWithIds();
+        return productList;
     }
 
 }

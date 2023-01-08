@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +55,7 @@ public class DiscountCodeController {
     }
 
     @PostMapping
-    public ResponseEntity<DiscountCodeResponse> addDiscountCode(@RequestBody DiscountCodePersistDto discountCodePersistDto,
+    public ResponseEntity<DiscountCodeResponse> addDiscountCode(@RequestBody @Valid DiscountCodePersistDto discountCodePersistDto,
                                                                 BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(DiscountCodeResponse.failed(result), HttpStatus.BAD_REQUEST);
